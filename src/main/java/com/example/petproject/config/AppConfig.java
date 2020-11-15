@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Scope;
+import org.springframework.jdbc.core.JdbcTemplate;
 
+import javax.sql.DataSource;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.function.Supplier;
@@ -46,6 +49,21 @@ public class AppConfig {
           now()
           .minus(2L, ChronoUnit.SECONDS);
   }
+
+//  @Bean
+//  public JdbcTemplate postgresJdbcTemplate(DataSource postgresDataSource) {
+//    return new JdbcTemplate(postgresDataSource);
+//  }
+//
+//  @Bean
+//  public JdbcTemplate mysqlJdbcTemplate() {
+//    return new JdbcTemplate();
+//  }
+//
+//  @Bean
+//  public DataSource postgresDataSource() {
+//
+//  }
 
 
 //  @Bean
