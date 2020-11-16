@@ -3,6 +3,7 @@ package com.example.petproject.events;
 import com.example.petproject.domain.Cat;
 import com.example.petproject.repositories.CatRepository;
 import com.example.petproject.service.ApplicationService;
+import com.example.petproject.service.CatService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -16,14 +17,26 @@ public class ApplicationReadyEventListener {
 
   private final CatRepository catRepository;
   private final ApplicationService applicationService;
+  private final CatService catService;
 
   public ApplicationReadyEventListener(CatRepository catRepository,
-        ApplicationService applicationService) {
+        ApplicationService applicationService,
+        CatService catService) {
+    this.catService = catService;
     this.catRepository = catRepository;
     this.applicationService = applicationService;
   }
 
   @EventListener(ApplicationReadyEvent.class)
+  public void up(){
+
+
+    catService.deleteCat(42L);
+  }
+
+
+
+//  @EventListener(ApplicationReadyEvent.class)
   public void applicationReady() {
     LOGGER.info("====== Application is ready =====");
     LOGGER.info("====== Application is name {} =====", applicationService.getName());
@@ -41,5 +54,9 @@ public class ApplicationReadyEventListener {
 
     var deletedCat = catRepository.getOne(updatedCat.get().getId());
     LOGGER.info("Deleted cat: " + deletedCat);
+
+    var paginatedCats = catRepository.getPaginatedData(1, 5);
+    LOGGER.info("Paginated cats size: " + paginatedCats.size());
+    LOGGER.info("Paginated cats: " + paginatedCats);
   }
 }

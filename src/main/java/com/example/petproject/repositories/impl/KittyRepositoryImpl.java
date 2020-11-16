@@ -12,6 +12,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import java.sql.PreparedStatement;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -68,5 +70,15 @@ public class KittyRepositoryImpl implements KittyRepository {
   @Override
   public void delete(Long id) {
     jdbcTemplate.update("DELETE FROM kitties where id = ?", id);
+  }
+
+  @Override
+  public List<Kitty> getPaginatedData(int pageNumber, int pageSize) {
+    return Collections.emptyList();
+  }
+
+  @Override
+  public void deleteAllBy(Long catId) {
+    jdbcTemplate.update("DELETE FROM kitties where cat_id = ?", catId);
   }
 }

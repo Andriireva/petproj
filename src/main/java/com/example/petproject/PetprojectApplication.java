@@ -16,8 +16,8 @@ public class PetprojectApplication {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PetprojectApplication.class);
 
-	@Autowired
-	private CatRepository catRepository;
+//	@Autowired
+//	private CatRepository catRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(PetprojectApplication.class, args);

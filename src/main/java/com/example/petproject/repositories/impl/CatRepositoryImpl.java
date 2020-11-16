@@ -13,6 +13,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import java.sql.PreparedStatement;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -75,6 +76,14 @@ public class CatRepositoryImpl implements CatRepository {
 
   @Override
   public void delete(Long id) {
-    jdbcTemplate.update("DELETE FROM cats where id = ?", id);
+    throw  new RuntimeException();
+//    jdbcTemplate.update("DELETE FROM cats where id = ?", id);
+  }
+
+  @Override
+  public List<Cat> getPaginatedData(int pageNumber, int pageSize) {
+    int limit = pageSize;
+    int offset = pageNumber * pageSize;
+    return jdbcTemplate.query("select * from cats limit ? offset ?", CAT_BEAN_PROPERTY_ROW_MAPPER, limit, offset);
   }
 }

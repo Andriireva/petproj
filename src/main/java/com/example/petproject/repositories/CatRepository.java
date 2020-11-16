@@ -4,7 +4,7 @@ import com.example.petproject.domain.Cat;
 
 import java.util.Optional;
 
-public interface CatRepository {
+public interface CatRepository extends Paginated<Cat> {
 
   Optional<Cat> getOne(Long id);
 

@@ -11,6 +11,11 @@ public class Kitty {
   public Kitty() {
   }
 
+  public Kitty(String name, String color) {
+    this.name = name;
+    this.color = color;
+  }
+
   public Kitty(Long id, String name, String color, Long catId) {
     this.id = id;
     this.name = name;
