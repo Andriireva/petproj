@@ -27,12 +27,12 @@ public class ApplicationReadyEventListener {
     this.applicationService = applicationService;
   }
 
-  @EventListener(ApplicationReadyEvent.class)
-  public void up(){
-
-
-    catService.deleteCat(42L);
-  }
+//  @EventListener(ApplicationReadyEvent.class)
+//  public void up(){
+//
+//
+////    catService.deleteCat(42L);
+//  }
 
 
 

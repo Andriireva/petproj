@@ -1,7 +1,5 @@
 package com.example.petproject.service;
 
-import com.example.petproject.client.FBCat;
-import com.example.petproject.client.PetClinicClient;
 import com.example.petproject.domain.Cat;
 import com.example.petproject.domain.Kitty;
 import com.example.petproject.dto.CatDTO;
@@ -14,8 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.Set;
-import java.util.function.Function;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.example.petproject.dto.KittyDTO.convertToDomain;
@@ -25,7 +22,6 @@ public class CatService {
 
   private final CatRepository catRepository;
   private final KittyRepository kittyRepository;
-//  private final PetClinicClient petClinicClient;
 
   public CatService(CatRepository catRepository, KittyRepository kittyRepository) {
     this.catRepository = catRepository;
@@ -33,7 +29,6 @@ public class CatService {
   }
 
   public CatDTO createCat(CatDTO catDto) {
-
     var createdCat = catRepository.create(CatDTO.convertToDomain(catDto)).get();
     var convertDtoCat = CatDTO.convertToDTO(createdCat);
     convertDtoCat.setKitties(new ArrayList<>());
@@ -47,9 +42,16 @@ public class CatService {
 
       });
     }
-
     return convertDtoCat;
   }
+
+  public CatDTO get(Long id) {
+    Cat cat = catRepository.getOne(id).orElseThrow(() -> new ResourceNotFoundException("Cat id with id " + id + " is not found"));
+    List<Kitty> kitties = kittyRepository.getAllByCatID(id);
+    CatDTO catDTO = CatDTO.convertToDTO(cat);
+    catDTO.setKitties(kitties.stream().map(kitty -> KittyDTO.convertToDTO(kitty)).collect(Collectors.toList()));
+    return catDTO;
+  };
 
   @Transactional
   public void deleteCat(Long id) {

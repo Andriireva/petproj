@@ -73,6 +73,11 @@ public class KittyRepositoryImpl implements KittyRepository {
   }
 
   @Override
+  public List<Kitty> getAllByCatID(Long catId) {
+    return jdbcTemplate.query("select * from kitties where cat_id = ?", KITTY_BEAN_PROPERTY_ROW_MAPPER, catId);
+  }
+
+  @Override
   public List<Kitty> getPaginatedData(int pageNumber, int pageSize) {
     return Collections.emptyList();
   }

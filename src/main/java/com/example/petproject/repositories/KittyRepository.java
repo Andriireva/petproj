@@ -2,6 +2,7 @@ package com.example.petproject.repositories;
 
 import com.example.petproject.domain.Kitty;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface KittyRepository extends Paginated<Kitty> {
@@ -14,4 +15,6 @@ public interface KittyRepository extends Paginated<Kitty> {
   void delete(Long id);
 
   void deleteAllBy(Long catId);
+
+  List<Kitty> getAllByCatID(Long id);
 }
