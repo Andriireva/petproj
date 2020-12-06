@@ -12,6 +12,11 @@ public class KittyDTO {
   public KittyDTO() {
   }
 
+  public KittyDTO(String name, String color) {
+    this.name = name;
+    this.color = color;
+  }
+
   public KittyDTO(Long id, String name, String color) {
     this.id = id;
     this.name = name;
