@@ -3,6 +3,7 @@ package com.example.petproject.controllers;
 import com.example.petproject.dto.CatDTO;
 import com.example.petproject.service.CatService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
