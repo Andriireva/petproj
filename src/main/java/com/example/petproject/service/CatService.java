@@ -7,6 +7,8 @@ import com.example.petproject.dto.KittyDTO;
 import com.example.petproject.exeptions.ResourceNotFoundException;
 import com.example.petproject.repositories.CatRepository;
 import com.example.petproject.repositories.KittyRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -18,15 +20,11 @@ import java.util.stream.Collectors;
 import static com.example.petproject.dto.KittyDTO.convertToDomain;
 
 @Component
+@RequiredArgsConstructor
 public class CatService {
 
   private final CatRepository catRepository;
   private final KittyRepository kittyRepository;
-
-  public CatService(CatRepository catRepository, KittyRepository kittyRepository) {
-    this.catRepository = catRepository;
-    this.kittyRepository = kittyRepository;
-  }
 
   public CatDTO createCat(CatDTO catDto) {
     var createdCat = catRepository.create(CatDTO.convertToDomain(catDto)).get();
@@ -61,6 +59,11 @@ public class CatService {
     }, () -> {
       throw new ResourceNotFoundException("Cat id with id " + id + " is not found");
     });
+  }
+
+  @SneakyThrows
+  public List<Cat> getPAges() {
+    return catRepository.getPaginatedData(5, 10);
   }
 
 }

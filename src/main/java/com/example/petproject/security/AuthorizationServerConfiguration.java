@@ -11,8 +11,10 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 @Configuration
 @EnableAuthorizationServer
@@ -21,34 +23,41 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     private final String clientSecret;
     private final String privateKey;
     private final AuthenticationManager authenticationManager;
+    private final TokenStore tokenStore;
 
     @Autowired
     public AuthorizationServerConfiguration(@Value("${spring.security.oauth2.client.clientId}") String clientid,
                                             @Value("${spring.security.oauth2.client.clientSecret}") String clientSecret,
                                             @Value("${spring.security.oauth2.client.privateKey}") String privateKey,
-                                            @Qualifier("authenticationManagerBean") AuthenticationManager authenticationManager) {
+                                            @Qualifier("authenticationManagerBean") AuthenticationManager authenticationManager,
+                                            TokenStore tokenStore
+          ) {
         this.clientid = clientid;
         this.clientSecret = clientSecret;
         this.privateKey = privateKey;
         this.authenticationManager = authenticationManager;
+        this.tokenStore = tokenStore;
     }
 
     @Bean
-    public JwtAccessTokenConverter tokenEnhancer() {
+    public AccessTokenConverter tokenEnhancer() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
         converter.setSigningKey(privateKey);
         return converter;
     }
 
-    @Bean
-    public JwtTokenStore tokenStore() {
-        return new JwtTokenStore(tokenEnhancer());
-    }
-
     @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+        DefaultTokenServices tokenServices = new DefaultTokenServices();
+
+        tokenServices.setSupportRefreshToken(true);
+        tokenServices.setTokenStore(tokenStore);
+        tokenServices.afterPropertiesSet();
+
         endpoints.authenticationManager(authenticationManager)
-              .tokenStore(tokenStore())
+              .tokenStore(tokenStore)
+              .reuseRefreshTokens(true)
+              .tokenServices(tokenServices)
               .accessTokenConverter(tokenEnhancer());
     }
 
@@ -64,8 +73,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
               .withClient(clientid)
               .secret(clientSecret)
               .scopes("read", "write")
-              .authorizedGrantTypes("password", "refresh_token").accessTokenValiditySeconds(20000)
+              .authorizedGrantTypes("password", "refresh_token")
+              .accessTokenValiditySeconds(20000)
               .refreshTokenValiditySeconds(200000);
-
     }
 }

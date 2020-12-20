@@ -77,13 +77,16 @@ class CatServiceTest {
 
   @Test
   void createCat_catDtoWithKitties_shouldReturnNewCat() {
-    Cat cat = new Cat();
     String msNorris = "Ms Norris";
-    cat.setName(msNorris);
     String color = "Yellow";
-    cat.setColor(color);
     boolean multiColor = true;
-    cat.setMultiColor(multiColor);
+
+    Cat cat = Cat.builder()
+          .name(msNorris)
+          .color(color)
+          .multiColor(multiColor)
+          .build();
+
     long generatedCatId = 55L;
     when(catRepository.create(cat))
           .thenAnswer(invocation -> {

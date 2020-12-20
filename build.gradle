@@ -19,10 +19,16 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
     // Security
 	implementation 'org.springframework.security.oauth:spring-security-oauth2:2.3.5.RELEASE'
 	implementation 'org.springframework.security:spring-security-jwt:1.1.1.RELEASE'
+
+	//Flyway
+	implementation 'org.flywaydb:flyway-core:6.2.4'
+
+	implementation 'org.projectlombok:lombok:1.18.16'
 
 	// JaxB
 	implementation 'javax.xml.bind:jaxb-api:2.3.0'

@@ -5,5 +5,5 @@ import com.example.petproject.domain.Role;
 import java.util.List;
 
 public interface RoleRepository {
-  List<Role> getRoles(Long id);
+  List<Role> getRoles(Long userId);
 }
