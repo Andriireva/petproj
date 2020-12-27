@@ -24,46 +24,47 @@ import static com.example.petproject.dto.KittyDTO.convertToDomain;
 public class CatService {
 
   private final CatRepository catRepository;
-  private final KittyRepository kittyRepository;
 
   public CatDTO createCat(CatDTO catDto) {
-    var createdCat = catRepository.create(CatDTO.convertToDomain(catDto)).get();
+    Cat catToBeSaved = CatDTO.convertToDomain(catDto);
+    List<Kitty> kittyList = catDto.getKitties()
+          .stream()
+          .map(kittyDTO -> {
+            Kitty kitty = convertToDomain(kittyDTO);
+            kitty.setCat(catToBeSaved);
+            return kitty;
+          })
+          .collect(Collectors.toList());
+    catToBeSaved.setKitties(kittyList);
+    var createdCat = catRepository.save(catToBeSaved);
+
     var convertDtoCat = CatDTO.convertToDTO(createdCat);
-    convertDtoCat.setKitties(new ArrayList<>());
-
-    if (!CollectionUtils.isEmpty(catDto.getKitties())) {
-      catDto.getKitties().forEach(kittyDTO -> {
-
-        var createdKitty = kittyRepository.create(createdCat.getId(), convertToDomain(kittyDTO)).get();
-        var convertedKittyDTO = KittyDTO.convertToDTO(createdKitty);
-        convertDtoCat.getKitties().add(convertedKittyDTO);
-
-      });
-    }
+    convertDtoCat.setKitties(createdCat.getKitties()
+          .stream()
+          .map(kitty -> KittyDTO.convertToDTO(kitty))
+          .collect(Collectors.toList()));
     return convertDtoCat;
   }
 
   public CatDTO get(Long id) {
-    Cat cat = catRepository.getOne(id).orElseThrow(() -> new ResourceNotFoundException("Cat id with id " + id + " is not found"));
-    List<Kitty> kitties = kittyRepository.getAllByCatID(id);
+    Cat cat = catRepository
+          .findById(id)
+          .orElseThrow(() -> new ResourceNotFoundException("Cat id with id " + id + " is not found"));
     CatDTO catDTO = CatDTO.convertToDTO(cat);
-    catDTO.setKitties(kitties.stream().map(kitty -> KittyDTO.convertToDTO(kitty)).collect(Collectors.toList()));
+    catDTO.setKitties(cat.getKitties().stream().map(kitty -> KittyDTO.convertToDTO(kitty)).collect(Collectors.toList()));
     return catDTO;
   };
 
   @Transactional
   public void deleteCat(Long id) {
-    catRepository.getOne(id).ifPresentOrElse(cat -> {
-      kittyRepository.deleteAllBy(id);
-      catRepository.delete(id);
-    }, () -> {
+    catRepository.findById(id).ifPresentOrElse(cat -> catRepository.delete(cat), () -> {
       throw new ResourceNotFoundException("Cat id with id " + id + " is not found");
     });
   }
-
-  @SneakyThrows
-  public List<Cat> getPAges() {
-    return catRepository.getPaginatedData(5, 10);
-  }
+//
+//  @SneakyThrows
+//  public List<Cat> getPAges() {
+//    return catRepository.getPaginatedData(5, 10);
+//  }
 
 }

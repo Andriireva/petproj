@@ -16,10 +16,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+//@Component
 public class KittyRepositoryImpl implements KittyRepository {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(CatRepositoryImpl.class);
+//  private static final Logger LOGGER = LoggerFactory.getLogger(CatRepositoryImpl.class);
   private static final BeanPropertyRowMapper<Kitty> KITTY_BEAN_PROPERTY_ROW_MAPPER = new BeanPropertyRowMapper<Kitty>(Kitty.class);
 
   private final JdbcTemplate jdbcTemplate;
@@ -35,15 +35,15 @@ public class KittyRepositoryImpl implements KittyRepository {
             KITTY_BEAN_PROPERTY_ROW_MAPPER, id);
       return Optional.of(kitty);
     } catch (EmptyResultDataAccessException e) {
-      LOGGER.debug("EmptyResultDataAccessException: ", e);
+//      LOGGER.debug("EmptyResultDataAccessException: ", e);
       return Optional.empty();
     }
   }
 
   @Override
   public Optional<Kitty> create(Long catId, Kitty kitty) {
-    LOGGER.debug("creating new Kitty with properties {}", kitty);
-    LOGGER.info("creating new kitty");
+//    LOGGER.debug("creating new Kitty with properties {}", kitty);
+//    LOGGER.info("creating new kitty");
     KeyHolder keyHolder = new GeneratedKeyHolder();
     jdbcTemplate.update(connection -> {
       PreparedStatement ps =
@@ -51,7 +51,7 @@ public class KittyRepositoryImpl implements KittyRepository {
                   new String[] { "id" });
       ps.setString(1, kitty.getName());
       ps.setString(2, kitty.getColor());
-      ps.setLong(3, kitty.getCatId());
+//      ps.setLong(3, kitty.getCatId());
       return ps;
     }, keyHolder);
     long kittyId = keyHolder.getKey().longValue();

@@ -15,10 +15,10 @@ public class CatDTO {
   private String medicalCardNumber;
   private List<KittyDTO> kitties;
 
-  public CatDTO() {
+  CatDTO() {
   }
 
-  public CatDTO(Long id, String name, String color, Boolean multiColor, List<KittyDTO> kitties) {
+  private CatDTO(Long id, String name, String color, Boolean multiColor, List<KittyDTO> kitties) {
     this.id = id;
     this.name = name;
     this.color = color;
@@ -26,7 +26,7 @@ public class CatDTO {
     this.kitties = kitties;
   }
 
-  public CatDTO(Long id, String name, String color, Boolean multiColor) {
+  private CatDTO(Long id, String name, String color, Boolean multiColor) {
     this.id = id;
     this.name = name;
     this.color = color;

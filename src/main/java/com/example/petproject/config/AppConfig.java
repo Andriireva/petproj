@@ -1,15 +1,9 @@
 package com.example.petproject.config;
 
-import com.example.petproject.repositories.CatRepository;
-import com.example.petproject.repositories.impl.CatRepositoryImpl;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Scope;
-import org.springframework.jdbc.core.JdbcTemplate;
 
-import javax.sql.DataSource;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.function.Supplier;

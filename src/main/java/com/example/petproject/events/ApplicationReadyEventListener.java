@@ -36,27 +36,28 @@ public class ApplicationReadyEventListener {
 
 
 
-//  @EventListener(ApplicationReadyEvent.class)
+  @EventListener(ApplicationReadyEvent.class)
   public void applicationReady() {
-    LOGGER.info("====== Application is ready =====");
-    LOGGER.info("====== Application is name {} =====", applicationService.getName());
+
+//    LOGGER.info("====== Application is ready =====");
+//    LOGGER.info("====== Application is name {} =====", applicationService.getName());
 //
-//    LOGGER.info("Cat with id 1: " + catRepository.getOne(1L));
-
-    var newCat = catRepository.create(new Cat("MyNewCatname", "Black", false));
-    LOGGER.info("New created cat: " + newCat);
-
-    var updatedCat = catRepository.update(newCat.get().getId(), new Cat("Updateteadname", "updateCOloer", true));
-    LOGGER.info("updated cat: " + updatedCat);
-
-    LOGGER.info("Deleting cat with id: " + updatedCat.get().getId());
-    catRepository.delete(updatedCat.get().getId());
-
-    var deletedCat = catRepository.getOne(updatedCat.get().getId());
-    LOGGER.info("Deleted cat: " + deletedCat);
-
-    var paginatedCats = catRepository.getPaginatedData(1, 5);
-    LOGGER.info("Paginated cats size: " + paginatedCats.size());
-    LOGGER.info("Paginated cats: " + paginatedCats);
+//    LOGGER.info("Cat with id 1: " + catRepository.findById(1L).get());
+//
+//    var newCat = catRepository.create(new Cat("MyNewCatname", "Black", false));
+//    LOGGER.info("New created cat: " + newCat);
+//
+//    var updatedCat = catRepository.update(newCat.get().getId(), new Cat("Updateteadname", "updateCOloer", true));
+//    LOGGER.info("updated cat: " + updatedCat);
+//
+//    LOGGER.info("Deleting cat with id: " + updatedCat.get().getId());
+//    catRepository.delete(updatedCat.get().getId());
+//
+//    var deletedCat = catRepository.getOne(updatedCat.get().getId());
+//    LOGGER.info("Deleted cat: " + deletedCat);
+//
+//    var paginatedCats = catRepository.getPaginatedData(1, 5);
+//    LOGGER.info("Paginated cats size: " + paginatedCats.size());
+//    LOGGER.info("Paginated cats: " + paginatedCats);
   }
 }
