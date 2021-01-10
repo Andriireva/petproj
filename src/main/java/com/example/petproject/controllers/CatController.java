@@ -1,5 +1,6 @@
 package com.example.petproject.controllers;
 
+import com.example.petproject.domain.Cat;
 import com.example.petproject.dto.CatDTO;
 import com.example.petproject.exeptions.ResourceNotFoundException;
 import com.example.petproject.service.CatService;
@@ -25,10 +26,12 @@ public class CatController {
     return catService.createCat(catDTO);
   }
 
-
   @GetMapping
-  public List<CatDTO> getCats() {
-    return Collections.emptyList();
+  public List<CatDTO> getCats(
+        @RequestParam(required = false) String text,
+        @RequestParam(required = false) String sortField
+        ) {
+    return catService.findAll(text, sortField);
   }
 
   @GetMapping(path = "/{id}")
@@ -39,6 +42,11 @@ public class CatController {
   @DeleteMapping(path = "/{id}")
   public void delete(@PathVariable Long id) {
     catService.deleteCat(id);
+  }
+
+  @PutMapping(path = "/{id}")
+  public CatDTO update(@PathVariable Long id, @RequestBody CatDTO catDTO) {
+    return catService.update(id, catDTO);
   }
 
 }

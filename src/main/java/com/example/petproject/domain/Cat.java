@@ -1,8 +1,11 @@
 package com.example.petproject.domain;
 
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.List;
 
 @Builder
@@ -13,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "cats")
-public class Cat {
+public class Cat extends AbstractAuditDomain {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
